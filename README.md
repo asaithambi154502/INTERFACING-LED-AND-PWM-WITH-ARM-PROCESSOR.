@@ -14,9 +14,11 @@ KEIL MICRO VISION 4.0 IDE
 
 
 ⮚	Open the Keil software and select the New uvision project from Project Menu as shown below.
+
 ⮚	Browse to your project folder and provide the project name and click on save.
 
 ⮚	Once the project is saved a new pop up “Select Device for Target” opens, Select the controller (NXP: LPC1768) from NXP (founded by philips) and click on OK.
+
 ⮚	Select the controller (NXP: LPC1768) and click on OK.
 
 ⮚	As LPC1768 needs the startup code, click on Yes option to include the LPC17xx Startup file.
@@ -38,11 +40,15 @@ KEIL MICRO VISION 4.0 IDE
 ⮚	Right Click on Target Options to select the option for generating .bin file.
 
 ⮚	Set IROM1 start address as 0x2000. Bootloader will be stored from 0x0000-0x2000 so application should start from 0x2000
+
 ⮚	Write	the	command	to	generate	the .bin file	from
 .axf file
 Command: fromelf --bin projectname.axf --output filename.bin
+
 ⮚	in c/c++ → include paths → desktop (00-libfiles).
+
 ⮚	.Bin file is generated after a rebuild.
+
 ⮚	Check the project folder for the generated .Bin file. ADD FILES:
 
 # ADD FILES:
@@ -54,20 +60,49 @@ Header:
 
 # PIN DIAGRAM :
 
+<img width="777" height="475" alt="image" src="https://github.com/user-attachments/assets/a02ccac9-5340-4d07-852b-0ff3790a9139" />
+
 
 # CIRCUIT DIAGRAM:
- 
+
+ <img width="787" height="446" alt="image" src="https://github.com/user-attachments/assets/8531c931-3330-46b2-a3e9-b0add9a7d672" />
+
+ <img width="721" height="187" alt="image" src="https://github.com/user-attachments/assets/cdaad854-2d2d-44f1-851f-2b74f033c699" />
+
  
 # PROGRAM:
 
+```
+#include <lpc17xx.h>
+#include "pwm.h"
+#include "delay.h"
 
- 
+#define CYCLE_TIME 100
+
+int main() {
+    int dutyCycle;
+    SystemInit();
+    PWM_Init(CYCLE_TIME);
+    PWM_Start(PWM_3);
+    while(1) {
+        for(dutyCycle = 0; dutyCycle < CYCLE_TIME; dutyCycle++) {
+            PWM_SetDutyCycle(PWM_3, dutyCycle);
+            DELAY_ms(10);
+        }
+        for(dutyCycle = CYCLE_TIME; dutyCycle > 0; dutyCycle--) {
+            PWM_SetDutyCycle(PWM_3, dutyCycle);
+            DELAY_ms(10);
+        }
+    }
+}
+
+```
+
 # Output:
 
+<img width="505" height="386" alt="image" src="https://github.com/user-attachments/assets/6874fa9f-d3c9-4656-9866-531e66e69ce7" />
 
 
+# Result:
 
-
-
-
-
+Thus interfacing LED and PWM with ARM processor LPC1768 is done and the outputs are verified.
